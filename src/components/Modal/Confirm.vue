@@ -15,7 +15,7 @@
         <div class="d-flex">
           <span v-text="'Snapshot'" class="flex-auto text-gray mr-1" />
           <a
-            :href="_etherscanLink(proposal.msg.payload.snapshot, 'block')"
+            :href="_explorer(proposal.msg.payload.snapshot, 'block')"
             target="_blank"
             class="float-right"
           >
@@ -55,7 +55,6 @@
 
 <script>
 import { mapActions } from 'vuex';
-import spaces from '@/spaces';
 
 export default {
   props: [
@@ -70,8 +69,7 @@ export default {
   ],
   data() {
     return {
-      loading: false,
-      spaces
+      loading: false
     };
   },
   computed: {
