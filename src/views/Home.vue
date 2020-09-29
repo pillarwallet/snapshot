@@ -46,7 +46,6 @@ import { mapActions } from 'vuex';
 import orderBy from 'lodash/orderBy';
 import homepage from '@pillarwallet/snapshot-spaces/spaces/homepage.json';
 import domains from '@pillarwallet/snapshot-spaces/spaces/domains.json';
-import spaces from '@/spaces';
 
 export default {
   data() {
@@ -56,11 +55,16 @@ export default {
   },
   computed: {
     spaces() {
-      const list = homepage.map(namespace => ({
-        ...spaces[namespace],
-        favorite: !!this.favoriteSpaces.favorites[namespace]
+      if (!this.web3.spaces) return {};
+      const spacesCurrentNetwork = Object.entries(this.web3.spaces)
+        .filter(space => space[1].chainId === this.web3.network.chainId)
+        .map(space => space[0]);
+      const spaces =
+        this.web3.network.chainId === 1 ? homepage : spacesCurrentNetwork;
+      const list = spaces.map(key => ({
+        ...this.web3.spaces[key],
+        favorite: !!this.favoriteSpaces.favorites[key]
       }));
-
       return orderBy(list, ['favorite'], ['desc']);
     }
   },
@@ -87,7 +91,6 @@ export default {
           key: domains[domainName]
         }
       });
-
     this.loadFavoriteSpaces();
   }
 };
