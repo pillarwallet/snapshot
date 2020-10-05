@@ -65,6 +65,7 @@ const actions = {
       return result;
     } catch (e) {
       commit('SEND_FAILURE', e);
+      console.log(e);
       const errorMessage =
         e && e.error_description
           ? `Oops, ${e.error_description}`
